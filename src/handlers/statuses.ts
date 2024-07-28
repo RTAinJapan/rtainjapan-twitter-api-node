@@ -8,6 +8,7 @@ import {
   deleteTweet,
   tweet,
 } from '@services/twitter';
+import { SendTweetV2Params } from 'twitter-api-v2';
 
 export const userTimelineHandler: AsyncRequestHandler = 
   async (_, res, next) => {
@@ -44,7 +45,7 @@ async (_, res, next) => {
 
 type UpdateStatusRequest = {
   status: string;
-  media_ids?: string[];
+  media_ids?: string | NonNullable<SendTweetV2Params['media']>['media_ids'];
   in_reply_to_tweet_id?: Twitter.v2.TweetId | null;
   quote_tweet_id?: Twitter.v2.TweetId | null;
 }
@@ -53,7 +54,7 @@ export const updateStatusHandler: AsyncRequestHandler<
   unknown, unknown, UpdateStatusRequest
 > = async (req, res, next) => {
   const mediaIds = typeof req.body.media_ids === 'string'
-    ? [ req.body.media_ids ] : req.body.media_ids;
+    ? [ req.body.media_ids ] as [string] : req.body.media_ids;
   const tweetResult = await tweet({
     text: req.body.status,
     media: mediaIds?.length ? {

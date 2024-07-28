@@ -1,3 +1,4 @@
+import { SendTweetV2Params } from 'twitter-api-v2';
 
 export type UserId = string;
 
@@ -79,7 +80,7 @@ export type MentionTweet = Tweet & {
 export type PostTweet = {
   text: string;
   media?: {
-    media_ids?: string[];
+    media_ids?: NonNullable<SendTweetV2Params['media']>['media_ids'];
     tagged_user_ids?: UserId[];
   };
   reply?: {
