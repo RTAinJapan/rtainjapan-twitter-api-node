@@ -109,11 +109,17 @@ export const listMentionTimeline = async (): Promise<Tweet[]> => {
 }
 
 export const updateStatus = async (post: PostTweet): Promise<PostResult> => {
+  const { data: me } = await wrapCallTwitter(() => client.currentUserV2());
   const { data } = await wrapCallTwitter(
     () => client.v2.tweet(post.text, post)
   );
   
-  return data;
+  const now = new Date();
+  return {
+    ...data,
+    username: me.username,
+    created_at: now.toISOString(),
+  };
 }
 
 export const deleteStatus = async (id: TweetId): Promise<void> => {
@@ -179,4 +185,12 @@ const timelineToTweets = (timeline: Tweetv2TimelineResult): Tweet[] => {
   return (data || []).map((d) => {
     return makeStatusWithIncludes(d, includes);
   });
+}
+
+export const getMe = async (): Promise<string> => {
+
+  const {data: me} = await wrapCallTwitter(() => 
+    client.currentUserV2());
+  
+  return me.username;
 }

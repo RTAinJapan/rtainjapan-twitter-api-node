@@ -86,7 +86,7 @@ export const destroyStatusHandler: AsyncRequestHandler<
   DestroyStatusParameter
 > = async (req, res, next) => {
   await deleteTweet(req.params.id);
-  const timeline = await getUserTimeline(true);
+  const timeline = await getUserTimeline();
 
   if (timeline.isErr()) {
     return next(timeline.error);

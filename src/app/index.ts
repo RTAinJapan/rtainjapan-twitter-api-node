@@ -6,6 +6,7 @@ import { logging } from './logging';
 import { handleTwitterError } from './middlewares';
 import cors from 'cors';
 import { config } from './config';
+import bootstrap from './bootstrap';
 
 const app = express();
 
@@ -24,5 +25,7 @@ logging(app);
 route(app);
 
 app.use(handleTwitterError);
+
+void bootstrap();
 
 export default app;

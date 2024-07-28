@@ -3,7 +3,7 @@ import configModule from 'config';
 type CacheConfiguration = {
   ttl: number;
   enabled: boolean;
-}
+};
 
 type TwitterConfiguration = {
   apiKey: string;
@@ -13,8 +13,8 @@ type TwitterConfiguration = {
 };
 
 type CorsConfiguration = {
-  origin: string;
-}
+  origin: string | string[];
+};
 
 export type Configuration = {
   debug: boolean;
@@ -22,7 +22,7 @@ export type Configuration = {
   cache: CacheConfiguration;
   twitter: TwitterConfiguration;
   cors?: CorsConfiguration;
-}
+};
 
 export const config: Configuration = {
   debug: configModule.get('debug'),
@@ -37,8 +37,9 @@ export const config: Configuration = {
     accessToken: configModule.get('twitter.accessToken'),
     accessSecret: configModule.get('twitter.accessSecret'),
   },
-  cors: configModule.has('cors') ?
-    {
+  cors: configModule.has('cors')
+    ? {
       origin: configModule.get('cors.origin'),
-    } : undefined
+    }
+    : undefined,
 };

@@ -91,5 +91,7 @@ export type PostTweet = {
 
 export type PostResult = {
   id: string;
+  username: string;
   text: string;
+  created_at: string;
 }
